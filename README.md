@@ -4,7 +4,17 @@ Prediction of logits for all positions in a protein. Multimers supported by prov
 
 Note: this model runs quickly (<10 seconds) for a 200 residue protein, with/without a GPU.
 ```bash
-docker run --gpus '"device=0"' -v $(pwd)/example/:/workspace --workdir /workspace proteinmpnn_ddg:base python3 /app/proteinmpnn_ddg/predict.py --pdb_path AF-Q9HBE4-F1-model_v4.pdb --chains A --outpath proteinmpnn_predictions.csv --seed 42 --model_name v_48_020
+docker run \
+  --gpus '"device=0"' \
+  -v $(pwd)/example/:/workspace \
+  --workdir /workspace \
+  proteinmpnn_ddg:base \
+  python3 /app/proteinmpnn_ddg/predict.py \
+    --pdb_path AF-Q9HBE4-F1-model_v4.pdb \
+    --chains A \
+    --outpath proteinmpnn_predictions.csv \
+    --seed 42 \
+    --model_name v_48_020
 ```
 
 # Paper reproduction
