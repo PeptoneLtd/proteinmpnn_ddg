@@ -55,7 +55,7 @@ python3 scripts/predict_datasets_esmif.py \
 This includes Figures 2 and 3, Table 1, the ESMif correction for methionine coefficient of 4.18 and all correlations relating to $\delta_{X\rightarrow Y}$ in Section 2.2 of the paper.
 
 1. Download and extract the training set of ProteinMPNN from [here](https://files.ipd.uw.edu/pub/training_sets/pdb_2021aug02.tar.gz) to get the folder `pdb_2021aug02/`. It's about 17GB tar file, extracted to 72GB.
-2. Run `python3 scripts/compute_shifts.py --data_path pdb_2021aug02/ --outpath data/coeff_proteinmpnn_ddg_v_48_020.csv` which will run all the ProteinMPNN related predictions, print the metrics for Table 1: Improved sequence recovery metrics from tailored usage of PROTEINMPNN to stdout, and the spearman correlation between ProteinMPNN single residue context predictions and the background amino acid frequencies which we mention in the main paper text. It will also produce `training_single_structure_per_cluster_23349_structures_5615050_residues.npz` which is a compressed numpy file with all the single residue backbones used to compute metrics on. This also produces `data/coeff_proteinmpnn_ddg_v_48_020.csv` contains $\delta_{X\rightarrow Y}^{ProteinMPNN}$.
+2. Run `python3 scripts/compute_shifts.py --data_path pdb_2021aug02/ --outpath data/coeff_proteinmpnn_ddg_v_48_020.csv` which will run all the ProteinMPNN related predictions, print the metrics for Table 1: Improved sequence recovery metrics from tailored usage of PROTEINMPNN to stdout, and the spearman correlation between ProteinMPNN single residue context predictions and the background amino acid frequencies which we mention in the main paper text. It will also produce `training_single_structure_per_cluster_23349_structures_5615050_residues.npz` which is a compressed numpy file with all the single residue backbones used to compute metrics on. This also produces `data/coeff_proteinmpnn_ddg_v_48_020.csv` which contains $\delta_{X\rightarrow Y}^{ProteinMPNN}$.
 3. Run 
 ```bash
 python3 scripts/compute_shifts_esmif.py \
@@ -69,7 +69,7 @@ This produces `data/coeff_esmif_raw.csv` which contains $\delta_{X\rightarrow Y}
 
 The plots in figure 2:  
 a. $\delta_{X\rightarrow Y}$ for ProteinMPNN, amino acids ordered by frequency in training set of ProteinMPNN (`data/delta_X_Y.pdf`)  
-b. Deviation from antisymmetry of $\delta_{X\rightarrow Y}$ for ProteinMPNN, $|\delta_{X\rightarrow Y}$+$\delta_{Y\rightarrow X}|$, amino acids ordered by degree of deviation. (`data/asymmetry_heatmap.pdf`)   
+b. Deviation from antisymmetry of $\delta_{X\rightarrow Y}$ for ProteinMPNN, $|\delta_{X\rightarrow Y}+\delta_{Y\rightarrow X}|$, amino acids ordered by degree of deviation. (`data/asymmetry_heatmap.pdf`)   
   can be reproduced from the `python3 scripts/build_proteinmpnn_delta_X_Y_plots.py --coeff_path data/coeff_proteinmpnn_ddg_v_48_020.csv --outfolder data/`
 
 ## Reproducing proteome scale predictions (and timings benchmark)
