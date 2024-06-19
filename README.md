@@ -1,8 +1,51 @@
 # ProteinMPNN-ddG
 
-Prediction of logits for all positions in a protein. Multimers supported by providing several chains separated by commas (`--chains A,B,C`).
+This repository contains the code and the trained models for the prediction of logits for all positions in a protein, 
+as demonstrated in the paper 
+[Improving Inverse Folding models at Protein Stability Prediction without additional Training or Data](https://doi.org/10.1101/2024.06.15.599145).
 
-Note: this model runs quickly (<10 seconds) for a 200 residue protein, with/without a GPU.
+[![DOI](https://zenodo.org/badge/426679803.svg)](https://doi.org/10.1101/2024.06.15.599145)
+
+Here we propose a novel estimator for the change in stability upon point mutation.
+
+[ProteinMPNN](https://github.com/dauparas/ProteinMPNN) is modified to use full sequence context, and a novel tied decoding scheme is introduced to improve 
+computational efficiency and enable saturation mutagenesis studies at scale.
+
+## Table of Contents
+
+- [ProteinMPNN-ddG](#ProteinMPNN-ddG)
+  - [Table of Contents](#table-of-contents)
+  - [Usage](#usage)
+  - [Reproducing results](#reproducing-results)
+    - [Notes](#notes)
+    - [Reproducing benchmarks](#reproducing-benchmarks)
+    - [Predictions to Metrics](#predictions-to-metrics)
+    - [PDBs to Predictions](#pdbs-to-predictions)
+    - [Reproducing the averaged single backbone related predictions](#reproducing-the-averaged-single-backbone-related-predictions)
+    - [Reproducing proteome scale predictions](#reproducing-proteome-scale-predictions)
+    - [Reproducing the tied and untied decoding order benchmarks relative to ProteinMPNN](#reproducing-the-tied-and-untied-decoding-order-benchmarks-relative-to-proteinMPNN)
+  - [Citations](#citations)
+  - [Acknowledgements](#acknowledgements)
+  - [Licence](#licence)
+
+## Usage
+
+[Docker](https://www.docker.com/) is required to successfully use this repository.
+
+Run
+
+```bash
+git clone https://github.com/PeptoneLtd/proteinmpnn_ddg.git
+cd proteinmpnn_ddg
+```
+
+We provide a prebuilt [docker image](ghcr.io/peptoneltd/proteinmpnn_ddg:4.0.0_base)
+you can use to predict the logits of each residue in a protein.
+
+Alternatively you can build your own docker image using the `Dockerfile`.
+
+Example
+
 ```bash
 docker run \
   --gpus '"device=0"' \
@@ -17,30 +60,39 @@ docker run \
     --model_name v_48_020
 ```
 
-# Paper reproduction
-Go to `paper/`
-## Data available
+Multimers are supported by providing several chains separated by commas (`--chains A,B,C`).
+
+**NOTE**: we strongly suggest to use GPU acceleration. Use the `--gpus all` option to parallelise the workload on all 
+the gpus available. This model runs also on CPU-only environments, just remove the `--gpus` flag.
+
+
+## Reproducing results
+
+```bash
+cd paper
+```
+
 The pdbs and predictions for all methods checked in the paper are available in `datasets/`. 
 
-Averaged logit differences for the single residue predictions over the ProteinMPNN training set for both ProteinMPNN and ESMif are available in `data/` as `coeff_proteinmpnn_ddg_v_48_020.csv` and `coeff_esmif.csv`.
+Averaged logit differences for the single residue predictions over the ProteinMPNN training set for both ProteinMPNN and
+ESMif are available in `data/` as `coeff_proteinmpnn_ddg_v_48_020.csv` and `coeff_esmif.csv`.
 
 Runtime benchmarks on a
 single NVIDIA V100 16 GB GPU machine are in `data/timings_benchmark.csv`. This was produced by `scripts/benchmark_decode_last.py`.
 
-# Reproducing results
-## Notes
+### Notes
 Optional dependency [paper] is required to run the scripts neccessary for reproducing the paper. This includes a CPU only version of ESMif and various plotting and loading utilities.
 
 ESMif has large model weights, you need to download them from [here](https://dl.fbaipublicfiles.com/fair-esm/models/esm_if1_gvp4_t16_142M_UR50.pt) as `esm_if1_gvp4_t16_142M_UR50.pt` and supply the path in the relevant ESMif scripts.
 
-## Reproducing benchmarks (Tables 3,4,5)
+### Reproducing benchmarks
 `Dockerfile` contains two images, you need to build the `paper` target to reproduce results in the paper.
 ```bash
 docker build . --tag proteinmpnn_ddg:paper --target paper
 ```
 The installed ESMif is CPU only, but is sufficient to reproduce the results quickly.
 
-### Predictions to Metrics (and Tables in the paper)
+### Predictions to Metrics
 From the predictions csvs in `datasets/` you can reproduce the results in Tables 3, 4 and 5, benchmarking the models on Tsuboyama, S2648 and S669:
   - Table 3: Accuracy of predictions for various models and datasets
   - Table 4: Ablation results for modifications of PROTEINMPNN
@@ -59,8 +111,7 @@ python3 scripts/predict_datasets_esmif.py \
   --esmif_model_path esm_if1_gvp4_t16_142M_UR50.pt
 ```
 
-## Reproducing the averaged single backbone related predictions
-(Apologies this convoluted)
+### Reproducing the averaged single backbone related predictions
 
 This includes Figures 2 and 3, Table 1, the ESMif correction for methionine coefficient of 4.18 and all correlations relating to $\delta_{X\rightarrow Y}$ in Section 2.2 of the paper.
 
@@ -82,7 +133,7 @@ a. $\delta_{X\rightarrow Y}$ for ProteinMPNN, amino acids ordered by frequency i
 b. Deviation from antisymmetry of $\delta_{X\rightarrow Y}$ for ProteinMPNN, $|\delta_{X\rightarrow Y}+\delta_{Y\rightarrow X}|$, amino acids ordered by degree of deviation. (`data/asymmetry_heatmap.pdf`)   
   can be reproduced from the `python3 scripts/build_proteinmpnn_delta_X_Y_plots.py --coeff_path data/coeff_proteinmpnn_ddg_v_48_020.csv --outfolder data/`
 
-## Reproducing proteome scale predictions (and timings benchmark)
+### Reproducing proteome scale predictions
 > Saturation mutagenesis predictions were made for all 23,391 AlphaFold2 predicted structures of the human proteome (UP000005640_9606_HUMAN) in 30 minutes on a single V100 16GB GPU
 This was computed by downloading the human proteome from [here](https://ftp.ebi.ac.uk/pub/databases/alphafold/latest/UP000005640_9606_HUMAN_v4.tar). Predictions were made using `scripts/predict_proteome.py` on an AWS p3.2xlarge instance which has a single V100 16GB GPU.   
 
@@ -97,17 +148,41 @@ aria2c -x 16 https://ftp.ebi.ac.uk/pub/databases/alphafold/latest/UP000005640_96
 tar -xf UP000005640_9606_HUMAN_v4.tar --wildcards --no-anchored '*.pdb.gz'
 gunzip *.pdb.gz
 ```
-## Reproducing the tied and untied decoding order benchmarks relative to ProteinMPNN
+### Reproducing the tied and untied decoding order benchmarks relative to ProteinMPNN
 The slowdown data in Figure 1 (`timings_benchmark.pdf`), and data underlying it, `timings_benchmark.csv`, can be reproduced via  
 `python3 scripts/benchmark_decode_last.py --outfolder data/` 
 if you hit OOM on your GPU you may reduce `--n 4096` to a lower power of two.
 
+## Citations <a name="citations"></a>
+
+If you use this work in your research, please cite the the relevant paper:
+
+```bibtex
+@article {Dutton2024.06.15.599145,
+	author = {Dutton, Oliver and Bottaro, Sandro and Invernizzi, Michele and Redl, Istvan and Chung, Albert and Fisicaro, Carlo and Airoldi, Fabio and Ruschetta, Stefano and Henderson, Louie and Owens, Benjamin MJ and Foerch, Patrik and Tamiola, Kamil},
+	title = {Improving Inverse Folding models at Protein Stability Prediction without additional Training or Data},
+	elocation-id = {2024.06.15.599145},
+	year = {2024},
+	doi = {10.1101/2024.06.15.599145},
+	publisher = {Cold Spring Harbor Laboratory},
+	abstract = {Deep learning protein sequence models have shown outstanding performance at de novo protein design and variant effect prediction. We substantially improve performance without further training or use of additional experimental data by introducing a second term derived from the models themselves which align outputs for the task of stability prediction. On a task to predict variants which increase protein stability the absolute success probabilities of PROTEINMPNN and ESMIF are improved by 11\% and 5\% respectively. We term these models PROTEINMPNN-ΔΔG and ESMIF-ΔΔG.Competing Interest StatementAll authors hold stock options in and work for Peptone Ltd},
+	URL = {https://www.biorxiv.org/content/early/2024/06/17/2024.06.15.599145},
+	eprint = {https://www.biorxiv.org/content/early/2024/06/17/2024.06.15.599145.full.pdf},
+	journal = {bioRxiv}
+}
+```
+
 # Acknowledgements
-Thanks to the ColabDesign team for the JAX implementation of ProteinMPNN we use:  
-Sergey Ovchinnikov @sokrypton  
-Shihao Feng @JeffSHF  
-Justas Dauparas @dauparas  
-Weikun.Wu @guyujun (from Levinthal.bio)  
-Christopher Frank @chris-kafka  
+Thanks to the ColabDesign team for the JAX implementation of ProteinMPNN we use
+
+[Sergey Ovchinnikov](https://github.com/sokrypton)  
+[Shihao Feng](https://github.com/JeffSHF) 
+[Justas Dauparas](https://github.com/dauparas)  
+[Weikun.Wu](https://github.com/guyujun) (from Levinthal.bio)  
+[Christopher Frank](https://github.com/chris-kafka) 
 
 Thanks to the entire ESM team for ESMif.
+
+## Licence
+
+This source code is licensed under the MIT license found in the `LICENSE` file in the root directory of this source tree.
