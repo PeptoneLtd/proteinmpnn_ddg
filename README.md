@@ -8,7 +8,7 @@ docker run \
   --gpus '"device=0"' \
   -v $(pwd)/example/:/workspace \
   --workdir /workspace \
-  proteinmpnn_ddg:base \
+  ghcr.io/peptoneltd/proteinmpnn_ddg:4.0.0_base \
   python3 /app/proteinmpnn_ddg/predict.py \
     --pdb_path AF-Q9HBE4-F1-model_v4.pdb \
     --chains A \
