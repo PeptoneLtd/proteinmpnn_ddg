@@ -1,0 +1,15 @@
+FROM mambaorg/micromamba:1.5-jammy-cuda-12.3.1 as base
+LABEL org.opencontainers.image.source=https://github.com/PeptoneLtd/proteinmpnn_ddg
+ARG MAMBA_DOCKERFILE_ACTIVATE=1
+USER root
+RUN apt-get update && apt-get install -y git
+RUN micromamba install -y -n base 'python>=3.10,<3.11' -c conda-forge -c conda
+WORKDIR /app
+COPY --chown=$MAMBA_USER:$MAMBA_USER . /app/proteinmpnn_ddg/
+RUN pip install /app/proteinmpnn_ddg/[cuda12]
+
+FROM base as paper
+ARG MAMBA_DOCKERFILE_ACTIVATE=1
+ARG PIP_EXTRA_INDEX_URL=https://download.pytorch.org/whl/cpu 
+RUN apt-get update && apt-get install -y build-essential
+RUN pip install /app/proteinmpnn_ddg/[cuda12,paper]
