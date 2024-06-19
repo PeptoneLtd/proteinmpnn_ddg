@@ -1,0 +1,38 @@
+[build-system]
+requires = ["poetry-core>=1.2.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "ProteinMPNN-ddG"
+version = "1.0.0"
+description = ""
+authors = ["Oliver Dutton <oliver@peptone.io>"]
+readme = "README.md"
+packages = [{include = "proteinmpnn_ddg"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+numpy = "1.25.0"
+biopython = "1.81"
+pandas = "2.0.3"
+scipy = "1.12.0"
+ColabDesign = { git = "https://github.com/PeptoneLtd/ColabDesign.git", tag = "paper_version_improving_inverse_folding_models" }
+chex = { version = "0.1.86" }
+jax = { version = "0.4.30" }
+jaxlib = { version = "0.4.30" }
+# Hacky solution for multiple versions of jax: 
+# https://stackoverflow.com/questions/72037181/how-to-add-optional-dependencies-of-a-library-as-extra-in-poetry-and-pyproject
+Jax = { version = "0.4.30", extras = ["cuda12"], optional=true }
+
+evosax = { version = "0.1.6", optional=true }
+plotly = { version = "5.22.0", optional=true }
+torch = { version = "2.3.1", optional=true }
+torch_geometric = { version="2.5.3", optional=true }
+Bio = { version = "1.7.1", optional=true }
+biotite = { version = "0.41.1", optional=true }
+fair-esm = { git = "https://github.com/facebookresearch/esm.git", rev = "2b369911bb5b4b0dda914521b9475cad1656b2ac", optional=true }
+kaleido = { version = "0.2.1" }
+
+[tool.poetry.extras]
+cuda12 = ["Jax"]
+paper = ["evosax", "plotly", "torch", "torch_geometric", "Bio", "biotite", "fair-esm", "kaleido"]
