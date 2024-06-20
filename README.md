@@ -60,12 +60,12 @@ docker run \
     --model_name v_48_020
 ```
 
-Multimers are supported by providing several chains separated by commas (`--chains A,B,C`).
+Multimers are supported by providing several chains separated by commas (`--chains A,B,C`). Only the first chain specified will be predicted, but it will use the context of all the other chains specified.
 
 This model runs also on CPU-only environments, just remove the `--gpus` flag and use `ghcr.io/peptoneltd/proteinmpnn_ddg:1.0.0_base_cpu`.
 
 ## Reproducing results
-
+Relevant data and scripts to the paper are available in `paper/`.
 ```bash
 cd paper
 ```
@@ -79,7 +79,7 @@ Runtime benchmarks on a
 single NVIDIA V100 16 GB GPU machine are in `data/timings_benchmark.csv`. This was produced by `scripts/benchmark_decode_last.py`.
 
 ### Notes
-Optional dependency [paper] is required to run the scripts neccessary for reproducing the paper. This includes a CPU only version of ESMif and various plotting and loading utilities.
+Optional dependency [paper] is required to run the scripts necessary for reproducing the paper. This includes a CPU only version of ESMif and various plotting and loading utilities.
 
 ESMif has large model weights, you need to download them from [here](https://dl.fbaipublicfiles.com/fair-esm/models/esm_if1_gvp4_t16_142M_UR50.pt) as `esm_if1_gvp4_t16_142M_UR50.pt` and supply the path in the relevant ESMif scripts.
 
@@ -141,9 +141,9 @@ This was computed by downloading the human proteome from [here](https://ftp.ebi.
 
 We found using usual PDB parsers were slower than ProteinMPNN-ddG so use a custom parser specialised to strict PDB format, where each line is 80 characters long (using whitespace to pad if neccessary) and numpy operations are used. Predictions were for [AFDB](https://alphafold.ebi.ac.uk/) PDBs which fufilled this criteria so no pre-processing was required. Inputs were padded to minimise recompilation.
 
-The throughput of 9,800 residues per second was calculated from the printed stdout from the scripts: 'Total time: 1516 seconds, approx 102us per position', this included compilation and file loading time. Through further checks, not in the script, we find we compile to 40 shapes, taking ~197 seconds, (~13\% of the total time) and loading of the PDB files accounts for ~86 seconds (~5\% of the total time). 14,850,403 residues are predicted in that just over 25 minute period.
+The throughput of 9,800 residues per second was calculated from the printed stdout from the script: 'Total time: 1516 seconds, approx 102us per position', this included compilation and file loading time. Through further checks, not in the script, we find we compile to 40 shapes, taking ~197 seconds, (~13\% of the total time) and loading of the PDB files accounts for ~86 seconds (~5\% of the total time). 14,850,403 residues are predicted in that 25 minute period.
 
-Predictions were made using the PDB files downloaded and extracted using the following script:
+Predictions were made using the PDB files downloaded and extracted using the following commands:
 ```bash
 apt-get update && apt-get install -y aria2
 aria2c -x 16 https://ftp.ebi.ac.uk/pub/databases/alphafold/latest/UP000005640_9606_HUMAN_v4.tar
@@ -151,7 +151,7 @@ tar -xf UP000005640_9606_HUMAN_v4.tar --wildcards --no-anchored '*.pdb.gz'
 gunzip *.pdb.gz
 ```
 ### Reproducing the tied and untied decoding order benchmarks relative to ProteinMPNN
-The slowdown data in Figure 1 (`timings_benchmark.pdf`), and data underlying it, `timings_benchmark.csv`, can be reproduced via  
+The slowdown shown in Figure 1, `timings_benchmark.pdf`, and data underlying it, `timings_benchmark.csv`, can be reproduced via  
 `python3 scripts/benchmark_decode_last.py --outfolder data/` 
 if you hit OOM on your GPU you may reduce `--n 4096` to a lower power of two.
 
