@@ -39,7 +39,7 @@ git clone https://github.com/PeptoneLtd/proteinmpnn_ddg.git
 cd proteinmpnn_ddg
 ```
 
-We provide a prebuilt [docker image](ghcr.io/peptoneltd/proteinmpnn_ddg:1.0.0_base)
+We provide a prebuilt [docker image](https://github.com/PeptoneLtd/proteinmpnn_ddg/pkgs/container/proteinmpnn_ddg/232610583?tag=1.0.0_paper)
 you can use to predict the logits of each residue in a protein.
 
 Alternatively you can build your own docker image using the `Dockerfile`.
