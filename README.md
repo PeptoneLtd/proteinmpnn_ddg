@@ -62,7 +62,7 @@ docker run \
 
 Multimers are supported by providing several chains separated by commas (`--chains A,B,C`). Only the first chain specified will be predicted, but it will use the context of all the other chains specified.
 
-This model runs also on CPU-only environments, just remove the `--gpus` flag and use `ghcr.io/peptoneltd/proteinmpnn_ddg:1.0.0_base_cpu`.
+This model also runs in CPU-only environments, just remove the `--gpus` flag and use `ghcr.io/peptoneltd/proteinmpnn_ddg:1.0.0_base_cpu`.
 
 ## Reproducing results
 Relevant data and scripts to the paper are available in `paper/`.
