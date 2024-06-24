@@ -4,7 +4,8 @@ This repository contains the code and the trained models for the prediction of l
 as demonstrated in the paper 
 [Improving Inverse Folding models at Protein Stability Prediction without additional Training or Data](https://doi.org/10.1101/2024.06.15.599145).
 
-[![DOI](https://zenodo.org/badge/426679803.svg)](https://doi.org/10.1101/2024.06.15.599145)
+[![DOI](https://img.shields.io/badge/DOI-10.1101/2024.06.15.599145-blue)](https://doi.org/10.1101/2024.06.15.599145)
+
 
 Here we propose a novel estimator for the change in stability upon point mutation.
 
