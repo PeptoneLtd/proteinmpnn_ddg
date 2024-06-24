@@ -11,10 +11,10 @@ Here we propose a novel estimator for the change in stability upon point mutatio
 [ProteinMPNN](https://github.com/dauparas/ProteinMPNN) is modified to use full sequence context, and a novel tied decoding scheme is introduced to improve 
 computational efficiency and enable saturation mutagenesis studies at scale.
 
-Colab available for ProteinMPNN-ddG as described in the paper to prioritise stability improving mutations:   
+Colab available for ProteinMPNN-ddG as described in the paper to **prioritise stability improving mutations**:   
 [![Stability Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PeptoneLtd/proteinmpnn_ddg/blob/main/ProteinMPNN_ddG.ipynb)
 
-Some follow-up work predicting binding affinity improving mutations, by a similar method (not fully benchmarked):  
+Some follow-up work to **prioritise binding affinity improving mutations**, by a similar method (not fully benchmarked):  
 [![Binding Affinity Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PeptoneLtd/proteinmpnn_ddg/blob/main/ProteinMPNN_ddG_binding.ipynb)
 
 
