@@ -37,9 +37,6 @@ Some follow-up work to **prioritise binding affinity improving mutations**, by a
   - [Licence](#licence)
 
 ## Usage
-
-[Docker](https://www.docker.com/) is required to successfully use this repository.
-
 Run
 
 ```bash
