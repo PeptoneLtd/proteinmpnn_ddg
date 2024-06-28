@@ -130,6 +130,6 @@ if (__name__=='__main__'):
   parser.add_argument("--outpath", help="Where to write pdf figure of N-Ca-C opening angle to", default='data/central_angles_distributions.pdf')
   args = parser.parse_args()
 
-  path_to_npz_structures = args.structure_data_path # '/raid/app/oliver/tmp/training_single_structure_per_cluster_23349_structures_5615050_residues.npz'
+  path_to_npz_structures = args.structure_data_path # 'training_single_structure_per_cluster_23349_structures_5615050_residues.npz'
   fig = build_N_CA_C_opening_angle_plot(path_to_npz_structures)
   fig.write_image(args.outpath,'pdf')
