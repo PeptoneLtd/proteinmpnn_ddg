@@ -2,7 +2,7 @@
 
 This repository contains the code and the trained models for the prediction of logits for all positions in a protein, 
 as demonstrated in the paper 
-[Improving Inverse Folding models at Protein Stability Prediction without additional Training or Data](https://doi.org/10.1101/2024.06.15.599145).
+[Improving Inverse Folding models at Protein Stability Prediction without additional Training or Data](https://www.mlsb.io/papers_2024/Improving_Inverse_Folding_models_at_Protein_Stability_Prediction_without_additional_Training_or_Data.pdf), NeurIPS 2024, [MLSB](https://www.mlsb.io/).
 
 [![DOI](https://img.shields.io/badge/DOI-10.1101/2024.06.15.599145-blue)](https://doi.org/10.1101/2024.06.15.599145)
 
@@ -165,17 +165,13 @@ if you hit OOM on your GPU you may reduce `--n 4096` to a lower power of two.
 If you use this work in your research, please cite the the relevant paper:
 
 ```bibtex
-@article {Dutton2024.06.15.599145,
-	author = {Dutton, Oliver and Bottaro, Sandro and Invernizzi, Michele and Redl, Istvan and Chung, Albert and Fisicaro, Carlo and Airoldi, Fabio and Ruschetta, Stefano and Henderson, Louie and Owens, Benjamin MJ and Foerch, Patrik and Tamiola, Kamil},
-	title = {Improving Inverse Folding models at Protein Stability Prediction without additional Training or Data},
-	elocation-id = {2024.06.15.599145},
-	year = {2024},
-	doi = {10.1101/2024.06.15.599145},
-	publisher = {Cold Spring Harbor Laboratory},
-	abstract = {Deep learning protein sequence models have shown outstanding performance at de novo protein design and variant effect prediction. We substantially improve performance without further training or use of additional experimental data by introducing a second term derived from the models themselves which align outputs for the task of stability prediction. On a task to predict variants which increase protein stability the absolute success probabilities of PROTEINMPNN and ESMIF are improved by 11\% and 5\% respectively. We term these models PROTEINMPNN-ΔΔG and ESMIF-ΔΔG.Competing Interest StatementAll authors hold stock options in and work for Peptone Ltd},
-	URL = {https://www.biorxiv.org/content/early/2024/06/17/2024.06.15.599145},
-	eprint = {https://www.biorxiv.org/content/early/2024/06/17/2024.06.15.599145.full.pdf},
-	journal = {bioRxiv}
+@inproceedings{proteinmpnn_ddg,
+  title     = {Improving Inverse Folding models at Protein Stability Prediction without additional Training or Data},
+  author    = {Dutton, Oliver and Bottaro, Sandro and Invernizzi, Michele and Redl, Istvan and Chung, Albert and Fisicaro, Carlo and Airoldi, Fabio and Ruschetta, Stefano and Henderson, Louie and Owens, Benjamin MJ and Foerch, Patrik and Tamiola, Kamil},
+  booktitle = {Proceedings of the NeurIPS Workshop on Machine Learning in Structural Biology},
+  year      = {2024},
+  note      = {Workshop Paper},
+  url       = {https://www.mlsb.io/papers_2024/Improving_Inverse_Folding_models_at_Protein_Stability_Prediction_without_additional_Training_or_Data.pdf}
 }
 ```
 
